@@ -111,7 +111,7 @@ export function apply(context: Context, config: Config) {
 频道: ${channelTitle}
 标题: ${title}
 发布时间: ${publishedAt}
-标签: ${tagString}
+简介: ${description}
 ${segment.image(thumbnail, mime)}`;
     } catch(err) {
       console.log(err);
