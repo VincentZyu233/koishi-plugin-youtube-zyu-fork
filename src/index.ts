@@ -106,7 +106,13 @@ export function apply(context: Context, config: Config) {
       } else {
         tagString = '无'
       }
-      return `Youtube视频内容解析\n===================\n频道: ${channelTitle}\n标题: ${title}\n发布时间: ${publishedAt}\n标签: ${tagString}\n${segment.image(thumbnail, mime)}`;
+      return `Youtube视频内容解析
+===================
+频道: ${channelTitle}
+标题: ${title}
+发布时间: ${publishedAt}
+标签: ${tagString}
+${segment.image(thumbnail, mime)}`;
     } catch(err) {
       console.log(err);
       return `发生错误!;  ${err}`;
