@@ -1,17 +1,20 @@
 {
-  "name": "koishi-plugin-youtube",
+  "name": "@h4m5ter/koishi-plugin-youtube",
   "description": "youtube plugin for koishi",
   "author": {
     "name": "TEDIORELEE",
     "email": "tediorelee@gmail.com",
     "url": "https://github.com/tediorelee"
   },
-  "private": false,
+  "maintainers": [{
+    "name": "H4M5TER",
+    "email": "h4m5ter@outlook.com"
+  }],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tediorelee/koishi-plugin-youtube.git"
+    "url": "git+https://github.com/h4m5ter/koishi-plugin-youtube.git"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -19,13 +22,12 @@
     "dist"
   ],
   "license": "MIT",
-  "scripts": {},
   "keywords": [
     "chatbot",
     "koishi",
     "plugin"
   ],
   "peerDependencies": {
-    "koishi": "^4.9.9"
+    "koishi": "^4.16.8"
   }
 }
