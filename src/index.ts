@@ -21,7 +21,7 @@ export function apply(context: Context, config: Config) {
 
   function MediaFormat() {
     // http://www.youtube.com/embed/m5yCOSHeYn4
-    var ytRegEx = /^(?:https?:\/\/)?(?:i\.|www\.|img\.)?(?:youtu\.be\/|youtube\.com\/|ytimg\.com\/)(?:embed\/|v\/|vi\/|vi_webp\/|watch\?v=|watch\?.+&v=)((\w|-){11})(?:\S+)?$/;
+    var ytRegEx = /(?:https?:\/\/)?(?:i\.|www\.|img\.)?(?:youtu\.be\/|youtube\.com\/|ytimg\.com\/)(?:shorts\/|embed\/|v\/|vi\/|vi_webp\/|watch\?v=|watch\?.+&v=)([\w-]{11})/;
     // http://vimeo.com/3116167, https://player.vimeo.com/video/50489180, http://vimeo.com/channels/3116167, http://vimeo.com/channels/staffpicks/113544877
     var vmRegEx = /https?:\/\/(?:vimeo\.com\/|player\.vimeo\.com\/)(?:video\/|(?:channels\/staffpicks\/|channels\/)|)((\w|-){7,9})/;
     // http://open.spotify.com/track/06TYfe9lyGQA6lfqo5szIi, https://embed.spotify.com/?uri=spotify:track:78z8O6X1dESVSwUPAAPdme
@@ -81,16 +81,16 @@ export function apply(context: Context, config: Config) {
     try {
       let id;
       if (session.content.includes('https://youtu.be')) {
-        const index = session.content.lastIndexOf("\/");
-        id = session.content.substring(index + 1, session.content.length);
+        id = session.content.match(/youtu\.be\/([\w-]{11})/)[1]
       } else {
         id = MediaFormat().getYoutubeID(session.content);
       }
-      const result = await fetchDataFromAPI(id);
-      if (!result.pageInfo.totalResults) {
-        logger.warn('接口返回了空列表')
-        return '接口返回了空列表'
+      if (!id) {
+        logger.warn('unable to perceive youtube id from' + session.content)
+        return next()
       }
+      logger.info('perceived youtube id ' + id)
+      const result = await fetchDataFromAPI(id);
       const snippet = result.items[0].snippet;
       const {
         title,
