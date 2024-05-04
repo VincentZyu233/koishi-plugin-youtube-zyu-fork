@@ -6,15 +6,17 @@
     "email": "tediorelee@gmail.com",
     "url": "https://github.com/tediorelee"
   },
-  "maintainers": [{
-    "name": "H4M5TER",
-    "email": "h4m5ter@outlook.com"
-  }],
+  "maintainers": [
+    {
+      "name": "H4M5TER",
+      "email": "h4m5ter@outlook.com"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/h4m5ter/koishi-plugin-youtube.git"
   },
-  "version": "1.0.3",
+  "version": "1.0.8",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
