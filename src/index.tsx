@@ -105,12 +105,12 @@ export function apply(ctx: Context, config: Config) {
     // if (tags) {
     //   tagString = tags.length > 1 ? tags.join(', ') : tags[0]
     // }
-    return `Youtube视频内容解析
-===================
-频道: ${channelTitle}
-标题: ${title}
-发布时间: ${publishedAt}
-简介: ${description}
-${h.image(thumbnail, mime)}`
+    return <>
+      {h.image(thumbnail, mime)}
+      <p>标题：{title}</p> {/* TODO: 时长 */}
+      <p>频道：{channelTitle}</p>
+      <p>发布时间：{publishedAt}</p>
+      <p>标签：{description}</p>
+    </>
   })
 }

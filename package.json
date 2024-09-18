@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/h4m5ter/koishi-plugin-youtube.git"
   },
-  "version": "1.0.8",
+  "version": "1.0.9",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -29,7 +29,10 @@
     "koishi",
     "plugin"
   ],
+  "dependencies": {
+    "@satorijs/element": "^3.1.7"
+  },
   "peerDependencies": {
-    "koishi": "^4.16.8"
+    "koishi": "^4.17.12"
   }
 }
