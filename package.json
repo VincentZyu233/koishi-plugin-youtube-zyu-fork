@@ -1,6 +1,6 @@
 {
   "name": "koishi-plugin-youtube-vincentzyu-fork",
-  "description": "youtube plugin for koishi",
+  "description": "youtube plugin for koishi, vincentzyu fork version qwq",
   "author": {
     "name": "TEDIORELEE",
     "email": "tediorelee@gmail.com",
@@ -14,9 +14,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/h4m5ter/koishi-plugin-youtube.git"
+    "url": "git+https://github.com/VincentZyu233/koishi-plugin-youtube-zyu-fork"
   },
-  "version": "1.0.9",
+  "version": "1.1.1-vincentzyu-fork",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [

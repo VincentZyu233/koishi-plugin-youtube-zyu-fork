@@ -4,14 +4,18 @@ import { platform } from 'os'
 export const name = 'youtube'
 
 export interface Config {
+  // constText: string,
   apiKey: string,
+  enableDebugOutput: boolean,
   enableQQWhitelist: boolean,
   QQwhilelist: Array<string>,
 }
 
 export const Config: z<Config> = z.object({
+  // constText: z.string().disabled().description("nihao"),
   apiKey: z.string().required().description('请填写你的youtube api key'),
-  enableQQWhitelist: z.boolean().description('是否启用QQ白名单(QQ平台只有指定用户发的才会相应)'),
+  enableDebugOutput: z.boolean().description('是否启用调试输出'),
+  enableQQWhitelist: z.boolean().description('是否启用QQ白名单(QQ平台只有指定用户发的才会响应)'),
   QQwhilelist: z.array(
     z.string().required().description('白名单用户QQ号')
   )
@@ -83,18 +87,21 @@ export function apply(ctx: Context, config: Config) {
     if (!isYoutube) return next()
 
     const foo = config.QQwhilelist.join(', ')
-    session.send(
-      `[debug] youtube link detected!!\n` +
-      `session.userId: ${session.userId}\n` +
-      `session.platform: ${session.platform}\n` +
-      `config.QQwhilelist: ${foo}\n` 
-    )
+    if ( config.enableDebugOutput ){
+      session.send(
+        `[debug] youtube link detected!!\n` +
+        `session.userId: ${session.userId}\n` +
+        `session.platform: ${session.platform}\n` +
+        `config.QQwhilelist: ${foo}\n` 
+      )
+    }
+    
 
     if (config.enableQQWhitelist) {
       if (config.QQwhilelist.includes(session.userId)) {
         session.send('好好好，你是youtube插件QQ白名单用户')
       } else {
-        session.send('不可以！你不是youtube插件QQ非白名单用户')
+        session.send('不可以！你不是youtube插件QQ白名单用户')
         return next()
       }
     }
