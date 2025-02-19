@@ -139,7 +139,7 @@ export function apply(ctx: Context, config: Config) {
     //   tagString = tags.length > 1 ? tags.join(', ') : tags[0]
     // }
 
-    const descriptionText = config.hideDescription ? '' : description
+    const descriptionText = config.hideDescription ? '(简介已隐藏)' : description
 
     return <>
       {h.image(thumbnail, mime)}
