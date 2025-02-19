@@ -1,13 +1,20 @@
 import { Context, h, z } from 'koishi'
+import { platform } from 'os'
 
 export const name = 'youtube'
 
 export interface Config {
-  apiKey: string
+  apiKey: string,
+  enableQQWhitelist: boolean,
+  QQwhilelist: Array<string>,
 }
 
 export const Config: z<Config> = z.object({
   apiKey: z.string().required().description('请填写你的youtube api key'),
+  enableQQWhitelist: z.boolean().description('是否启用QQ白名单(QQ平台只有指定用户发的才会相应)'),
+  QQwhilelist: z.array(
+    z.string().required().description('白名单用户QQ号')
+  )
 })
 
 const apiEndpointPrefix = 'https://www.googleapis.com/youtube/v3/videos'
@@ -75,6 +82,23 @@ export function apply(ctx: Context, config: Config) {
     const isYoutube = session.content.includes('youtube.com') || session.content.includes('https://youtu.be')
     if (!isYoutube) return next()
 
+    const foo = config.QQwhilelist.join(', ')
+    session.send(
+      `[debug] youtube link detected!!\n` +
+      `session.userId: ${session.userId}\n` +
+      `session.platform: ${session.platform}\n` +
+      `config.QQwhilelist: ${foo}\n` 
+    )
+
+    if (config.enableQQWhitelist) {
+      if (config.QQwhilelist.includes(session.userId)) {
+        session.send('好好好，你是youtube插件QQ白名单用户')
+      } else {
+        session.send('不可以！你不是youtube插件QQ非白名单用户')
+        return next()
+      }
+    }
+
     let id
     if (session.content.includes('https://youtu.be')) {
       id = session.content.match(/youtu\.be\/([\w-]{11})/)[1]
@@ -107,6 +131,8 @@ export function apply(ctx: Context, config: Config) {
     // }
     return <>
       {h.image(thumbnail, mime)}
+      {/* <p>session.platform: {session.platform}</p>
+      <p>session.userId: {session.userId}</p> */}
       <p>标题：{title}</p> {/* TODO: 时长 */}
       <p>频道：{channelTitle}</p>
       <p>发布时间：{publishedAt}</p>
