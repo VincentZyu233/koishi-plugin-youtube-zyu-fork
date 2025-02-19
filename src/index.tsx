@@ -6,6 +6,7 @@ export const name = 'youtube'
 export interface Config {
   // constText: string,
   apiKey: string,
+  hideDescription: boolean,
   enableDebugOutput: boolean,
   enableQQWhitelist: boolean,
   QQwhilelist: Array<string>,
@@ -14,6 +15,7 @@ export interface Config {
 export const Config: z<Config> = z.object({
   // constText: z.string().disabled().description("nihao"),
   apiKey: z.string().required().description('请填写你的youtube api key'),
+  hideDescription: z.boolean().description('是否隐藏视频简介').default(true),
   enableDebugOutput: z.boolean().description('是否启用调试输出'),
   enableQQWhitelist: z.boolean().description('是否启用QQ白名单(QQ平台只有指定用户发的才会响应)'),
   QQwhilelist: z.array(
@@ -136,6 +138,9 @@ export function apply(ctx: Context, config: Config) {
     // if (tags) {
     //   tagString = tags.length > 1 ? tags.join(', ') : tags[0]
     // }
+
+    const descriptionText = config.hideDescription ? '' : description
+
     return <>
       {h.image(thumbnail, mime)}
       {/* <p>session.platform: {session.platform}</p>
@@ -143,7 +148,7 @@ export function apply(ctx: Context, config: Config) {
       <p>标题：{title}</p> {/* TODO: 时长 */}
       <p>频道：{channelTitle}</p>
       <p>发布时间：{publishedAt}</p>
-      <p>标签：{description}</p>
+      <p>简介：{descriptionText}</p>
     </>
   })
 }
