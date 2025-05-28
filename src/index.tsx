@@ -99,7 +99,7 @@ export function apply(ctx: Context, config: Config) {
     }
     
 
-    if (config.enableQQWhitelist) {
+    if ( session.platform === "onebot" && config.enableQQWhitelist) {
       if (config.QQwhilelist.includes(session.userId)) {
         session.send('好好好，你是youtube插件QQ白名单用户')
       } else {
