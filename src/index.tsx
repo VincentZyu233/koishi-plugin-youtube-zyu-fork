@@ -7,6 +7,7 @@ export interface Config {
   // constText: string,
   apiKey: string,
   hideDescription: boolean,
+  maxDescriptionLength: number,
   enableDebugOutput: boolean,
   enableQQWhitelist: boolean,
   QQwhilelist: Array<string>,
@@ -16,6 +17,7 @@ export const Config: z<Config> = z.object({
   // constText: z.string().disabled().description("nihao"),
   apiKey: z.string().required().description('请填写你的youtube api key'),
   hideDescription: z.boolean().description('是否隐藏视频简介').default(true),
+  maxDescriptionLength: z.number().default(300).description('视频简介最大长度'),
   enableDebugOutput: z.boolean().description('是否启用调试输出'),
   enableQQWhitelist: z.boolean().description('是否启用QQ白名单(QQ平台只有指定用户发的才会响应)'),
   QQwhilelist: z.array(
@@ -101,9 +103,9 @@ export function apply(ctx: Context, config: Config) {
 
     if ( session.platform === "onebot" && config.enableQQWhitelist) {
       if (config.QQwhilelist.includes(session.userId)) {
-        session.send('好好好，你是youtube插件QQ白名单用户')
+        session.send( h.quote(session.messageId) + '好好好，你是youtube插件QQ白名单用户' )
       } else {
-        session.send('不可以！你不是youtube插件QQ白名单用户')
+        session.send( h.quote(session.messageId) + '不可以！你不是youtube插件QQ白名单用户')
         return next()
       }
     }
@@ -139,7 +141,13 @@ export function apply(ctx: Context, config: Config) {
     //   tagString = tags.length > 1 ? tags.join(', ') : tags[0]
     // }
 
-    const descriptionText = config.hideDescription ? '(简介已隐藏)' : description
+    // const descriptionText = config.hideDescription ? '(简介已隐藏)' : description
+    let descriptionText = description
+    if (config.hideDescription) {
+      descriptionText = '(简介已隐藏)'
+    } else if (description.length > config.maxDescriptionLength) {
+      descriptionText = description.slice(0, config.maxDescriptionLength) + `...(已隐藏${description.length - config.maxDescriptionLength}字)`
+    }
 
     return <>
       {h.image(thumbnail, mime)}
