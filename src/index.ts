@@ -281,13 +281,13 @@ export function apply(ctx: Context, config: Config) {
   startRestService(ctx, config);
 
   ctx.middleware(async (session, next) => {
+    const isYoutube = session.content.includes('youtube.com') || session.content.includes('https://youtu.be')
+    if (!isYoutube) return next()
+
     if (!config.enableParseUrlFromPlatformSession) {
       logger.info("URL解析功能已禁用，跳过处理。");
       return next();
     }
-
-    const isYoutube = session.content.includes('youtube.com') || session.content.includes('https://youtu.be')
-    if (!isYoutube) return next()
 
     let isValidUser: boolean = true;
     if (config.platformWhitelistArr && config.platformWhitelistArr.length > 0) {

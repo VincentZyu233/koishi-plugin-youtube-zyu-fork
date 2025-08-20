@@ -28,16 +28,39 @@ function MediaFormat() {
   }
 }
 
+// 简易 HTML 实体解码（主要处理 &amp; 等常见场景）
+function decodeHtmlEntities(input: string): string {
+  if (!input) return input
+  return input
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+}
+
+// 规范化原始输入，解决平台转义后的 URL 问题
+function normalizeInputUrl(raw: string): string {
+  if (!raw) return raw
+  let s = raw.trim()
+  // 某些平台会把 & 转义为 &amp;，导致正则无法匹配 watch?xxx&v= 场景
+  s = decodeHtmlEntities(s)
+  // 去掉可能的尖括号包裹
+  s = s.replace(/[<>]/g, '')
+  return s
+}
+
 // 从 URL 中提取 YouTube 视频 ID
 export function extractYoutubeId(url: string): string | null {
-  let id;
-  if (url.includes('https://youtu.be')) {
-    const match = url.match(/youtu\.be\/([\w-]{11})/);
-    id = match ? match[1] : null;
+  const src = normalizeInputUrl(url)
+  let id
+  if (src.includes('https://youtu.be')) {
+    const match = src.match(/youtu\.be\/([\w-]{11})/)
+    id = match ? match[1] : null
   } else {
-    id = MediaFormat().getYoutubeID(url);
+    id = MediaFormat().getYoutubeID(src)
   }
-  return id;
+  return id
 }
 
 // 从 YouTube API 获取视频数据
