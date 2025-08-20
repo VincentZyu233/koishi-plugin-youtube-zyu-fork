@@ -237,7 +237,7 @@ export const Config: z<Config> = z.intersect([
       .description("RESTful 服务绑定的IP地址"),
     restServiceBindPort: z.number()
       .min(1024).max(65535).step(1)
-      .default(8020)
+      .default(18020)
       .description("RESTful 服务绑定的端口"),
   }).description("rest服务配置"),
 
@@ -374,14 +374,14 @@ export function apply(ctx: Context, config: Config) {
         }
       }
 
-      await session.bot.deleteMessage(session.channelId, session.messageId);
+      await session.bot.deleteMessage(session.channelId, String(session.messageId));
 
     } catch (error) {
-      logger.error('Error processing YouTube video:', error);
       const errorMsg = config.middlewareWorkMode === 'rest_client' 
-        ? '调用远程渲染服务失败，请检查服务器配置。'
-        : '无法获取该视频信息，可能是链接有误、视频不存在或API Key配置错误。';
-      await session.send(`${h.quote(session.messageId)}${errorMsg}`);
+        ? 'rest_client工作模式时发生错误:'
+        : 'standalone工作模式时发生错误:';
+      await session.send(`${h.quote(session.messageId)}${errorMsg}\n\t ${config.enableVerboseSessionOutput ? error.message : ''}`);
+      logger.error(`${errorMsg}\n\t ${config.enableVerboseConsoleOutput ? error.message : ''}`);
     }
   })
 }
