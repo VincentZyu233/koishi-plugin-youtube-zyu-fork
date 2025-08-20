@@ -16,3 +16,11 @@ youtube plugin for koishi, vincentzyu fork version
 * 插件将会自动识别群聊里的YouTube视频链接并返回视频预览内容等等，包含以下两种：
   * https://youtu.be/{id}
   * https://www.youtube.com/watch?v={id}
+
+-----
+
+## dev
+```shell
+cd youtube-vincentzyu-fork
+yarn add axios socks-proxy-agent
+```

@@ -1,6 +1,7 @@
 {
   "name": "koishi-plugin-youtube-vincentzyu-fork",
-  "description": "youtube plugin for koishi, vincentzyu fork version qwq",
+  "version": "1.1.2-alpha1+20250820",
+  "description": "检测聊天中的youtube链接，解析视频信息并返回 文字/图片形式的概览。 fork from https://github.com/H4M5TER/koishi-plugin-youtube",
   "author": {
     "name": "TEDIORELEE",
     "email": "tediorelee@gmail.com",
@@ -16,7 +17,12 @@
     "type": "git",
     "url": "git+https://github.com/VincentZyu233/koishi-plugin-youtube-zyu-fork"
   },
-  "version": "1.1.1-vincentzyu-fork",
+  "koishi": {
+    "description": {
+      "en": "Fetch YouTube video information from links in chat, returning an overview in text/image format.",
+      "zh": "检测聊天中的youtube链接，解析视频信息并返回 文字/图片形式的概览"
+    }
+  },
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -30,7 +36,11 @@
     "plugin"
   ],
   "dependencies": {
-    "@satorijs/element": "^3.1.7"
+    "@satorijs/element": "^3.1.7",
+    "axios": "^1.11.0",
+    "fastify": "^5.5.0",
+    "https-proxy-agent": "^7.0.6",
+    "socks-proxy-agent": "^8.0.5"
   },
   "peerDependencies": {
     "koishi": "^4.17.12"
