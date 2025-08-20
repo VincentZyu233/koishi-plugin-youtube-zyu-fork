@@ -374,7 +374,7 @@ export function apply(ctx: Context, config: Config) {
         }
       }
 
-      await session.bot.deleteMessage(session.channelId, String(session.messageId));
+      hintMsgId!==undefined && await session.bot.deleteMessage(session.channelId, hintMsgId[0]);
 
     } catch (error) {
       const errorMsg = config.middlewareWorkMode === 'rest_client' 
